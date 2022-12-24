@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import uuid from 'react-uuid';
 
 const AddForm = () => {
+    // const[open,setOpen]=(true);
     const id = uuid();
     console.log(id);
-const[open,setOpen]=(true);
+
     const [questions,setQuestions] = useState( [
         {questionText:"which is the capital city of bangladesh?",
     questionType:"radio",
@@ -16,16 +17,17 @@ options:[
     {optionText:"Khulna"},
     {optionText:"Borisal"}
 ],
-// open:true,
-// required:false
+open:true,
+required:false
 }]
 
 )
 
 function questionUI(){
-    return questions.map((ques,i)=>{
-        <div>
-        <Accordion expanded={ques.open} className={ques[i].open ?'add border':""} >
+    
+    return questions.map((ques,i)=>(
+        <div key={i}>
+        <Accordion expanded={questions[i].open} className={questions[i].open ?'add border':""} >
         <AccordionSummary
         aria-controls='panel1a-content'
         id="panel1a-header"
@@ -33,14 +35,14 @@ function questionUI(){
         >
             
              {
-                !questions[i].open ? (
+                questions[i].open ? (
                     <div className='saved_questions'>
                         <Typography style={{ fontSize:"15px",fontWeight:"400",letterSpacing:'.1px' ,lineHeight:'24px',paddingBottom:"8px" }}>
                         {i+1}.{questions[i].questionText}
                         </Typography>
 
-                        {ques.options.map((op,j)=>{
-                            <div style={{ display:"flex" }}>
+                        {ques.options.map((op,j)=>(
+                            <div key={j} style={{ display:"flex" }}>
                                 <FormControlLabel
                                   style={{marginLeft:"5px",marginBottom:"5px"  }} disabled control={<input type={ques.questionType}
                                   color="primary"style={{ marginRight:'3px' }} required={ques.type}
@@ -58,7 +60,7 @@ function questionUI(){
                                 </Typography>}
                                 />
                             </div>
-                        })}
+                        ))}
 
                     </div>
                 ):""
@@ -68,7 +70,7 @@ function questionUI(){
         </AccordionSummary>
         </Accordion>
     </div>
-    })
+    ))
 
   
 }

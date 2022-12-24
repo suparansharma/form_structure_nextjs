@@ -2,13 +2,14 @@ import React, { useState } from "react";
 
 const AddUser = () => {
 
-    const [inputField,setInputField] = useState([]);
+    const [inputField,setInputField] = useState("");
 
-    const handleInputChange =()=>{
+    const handleInputChange =(e)=>{
         const {name,value} = e.target;
         const list =[...inputField];
-        list[index][name]=value;
-        setInputField(list);
+        // list[index][name]=value;
+        // setInputField(list);
+        console.log(name);
     }
 
     const handleAddUser =()=>{
