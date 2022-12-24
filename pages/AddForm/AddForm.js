@@ -1,4 +1,6 @@
-import { Accordion, AccordionSummary, Button, FormControlLabel, Typography } from '@mui/material';
+import { CheckBox, Close, CropOriginal, Radio, ShortText, Subject } from '@mui/icons-material';
+import { Accordion, AccordionDetails, AccordionSummary, Button, FormControlLabel, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import { fontSize } from '@mui/system';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import uuid from 'react-uuid';
@@ -68,6 +70,39 @@ function questionUI(){
             
 
         </AccordionSummary>
+
+        <div className='question_boxes'>
+             <AccordionDetails className='add_question'>
+             <div className='add_question_top'>
+                <input type="text" name="" value={ques.questionText} placeholder='Question'/>
+                <CropOriginal style={{ color:"#5f6368" }}/>
+                <Select className='select' style={{ color:"#5f6368" ,fontSize:"13px" }}>
+                    <MenuItem id='text' value='text'><Subject style={{ marginRight:"10px" }}/> Paragraph</MenuItem>
+                    <MenuItem id='checkbox' value='Checkbox'><CheckBox style={{ marginRight:"10px",color:'#70757a'  }} checked/> CheckBox</MenuItem>
+                    <MenuItem id='radio' value='Radio'><Radio style={{ marginRight:"10px",color:'#70757a'  }} checked/> Multiple Choice</MenuItem>
+
+
+                </Select>
+             </div>
+
+             { ques.options.map((op,j)=>(
+                    <div className='add_question_body' key={j}>
+                        {
+                            (ques.questionType!="text") ?
+                            <input type={ques.questionType} style={{ marginRight:"10px" }}/>:
+                            <ShortText style={{ marginRight:"10px" }}/>
+                        }
+                    </div>
+                    // <div  >
+                    //     <input type="text" className="text_input" placeholder="option" value={ques.option[j].optionText}/>
+                    // </div>
+                    // <CropOriginal style={{color:"#5f6368"}}/>
+                    // <IconButton aria-label='delete'>
+                    //     <Close/>
+                    // </IconButton>
+                ))}
+             </AccordionDetails>
+        </div>
         </Accordion>
     </div>
     ))
