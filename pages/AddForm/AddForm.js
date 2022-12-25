@@ -74,7 +74,7 @@ function questionUI(){
         <div className='question_boxes'>
              <AccordionDetails className='add_question'>
              <div className='add_question_top'>
-                <input type="text" name="" value={ques.questionText} placeholder='Question'/>
+                <input type="text" className="question" name="" value={ques.questionText}  placeholder='Question'/>
                 <CropOriginal style={{ color:"#5f6368" }}/>
                 <Select className='select' style={{ color:"#5f6368" ,fontSize:"13px" }}>
                     <MenuItem id='text' value='text'><Subject style={{ marginRight:"10px" }}/> Paragraph</MenuItem>
@@ -92,15 +92,22 @@ function questionUI(){
                             <input type={ques.questionType} style={{ marginRight:"10px" }}/>:
                             <ShortText style={{ marginRight:"10px" }}/>
                         }
+                        
+                      
+                     <div  >
+                     {/* value={ques.option[j].optionText} */}
+                    <input type="text" className="text_input" placeholder="option" />
                     </div>
-                    // <div  >
-                    //     <input type="text" className="text_input" placeholder="option" value={ques.option[j].optionText}/>
-                    // </div>
-                    // <CropOriginal style={{color:"#5f6368"}}/>
-                    // <IconButton aria-label='delete'>
-                    //     <Close/>
-                    // </IconButton>
+                    <CropOriginal style={{color:"#5f6368"}}/>
+                    <IconButton aria-label='delete'>
+                        <Close/>
+                    </IconButton>  
+                    </div>
+                   
+ 
                 ))}
+
+
              </AccordionDetails>
         </div>
         </Accordion>
