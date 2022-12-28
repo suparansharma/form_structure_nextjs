@@ -58,6 +58,13 @@ const AddForm = () => {
     console.log(newQuestion)
   }
 
+
+  function changeOptionValue(text,i,j){
+    var optionsQuestion = [...questions];
+    optionsQuestion[i].options[j].optionText = text;
+    setQuestions(optionsQuestion);
+  }
+
   function addQuestionType(i,type){
     let qs =[...questions];
     console.log(type);
@@ -66,6 +73,28 @@ const AddForm = () => {
     console.log("click")
   }
 
+
+  function removeOption(i,j){
+    var RemoveOptionQuestion = [...questions];
+    if(RemoveOptionQuestion[i].options.length > 1){
+      RemoveOptionQuestion[i].options.splice(j,1);
+      setQuestions(RemoveOptionQuestion)
+    }
+  }
+
+
+  function addOption(i){
+    var optionsOfQuestion = [...question];
+    if(optionsOfQuestion[i].options.length < 5){
+      optionsOfQuestion[i].options.push({optionText:"Option" + (optionsOfQuestion[i].options.length +1)})
+    }else{
+      console.log("Max 5 options")
+    }
+
+    setQuestions(optionsOfQuestion);
+  }
+
+
   function questionUI() {
     return questions.map((ques, i) => (
       <div key={i}>
@@ -73,10 +102,10 @@ const AddForm = () => {
           expanded={questions[i].open}
           className={questions[i].open ? "add border" : ""}
         >
-          <AccordionSummary
+          {/*  <AccordionSummary
             aria-controls="panel1a-content"
             id="panel1a-header"
-            elevation={1}
+            // elevation={1}
             style={{ width: "100%" }}
           >
             {questions[i].open ? (
@@ -93,8 +122,9 @@ const AddForm = () => {
                   {i + 1}.{questions[i].questionText}
                 </Typography>
 
-                {ques.options.map((op, j) => (
-                  <div key={j} style={{ display: "flex" }}>
+               {ques.options.map((op, j) => (
+                  <div key={j}>
+                     <div  style={{ display: "flex" }}>
                     <FormControlLabel
                       style={{ marginLeft: "5px", marginBottom: "5px" }}
                       disabled
@@ -122,12 +152,12 @@ const AddForm = () => {
                       }
                     />
                   </div>
-                ))}
+                  </div>
+                 
+                ))} 
               </div>
-            ) : (
-              ""
-            )}
-          </AccordionSummary>
+            ) :  ""}
+          </AccordionSummary>*/}
 
           <div className="question_boxes">
             <AccordionDetails className="add_question">
@@ -135,7 +165,7 @@ const AddForm = () => {
                 <input
                   type="text"
                   className="question"
-                  name=""
+                  // name=""
                   value={ques.questionText}
                   placeholder="Question"
                   onChange={(e)=>{changeQuestion(e.target.value,i)}}
@@ -145,23 +175,24 @@ const AddForm = () => {
                   className="select"
                   style={{ color:"#5f6368", fontSize: "13px" }}
                 >
-                  <MenuItem id="text" value="text" onCLick={()=>{addQuestionType(i,"text")}}>
+                  <MenuItem id="text" value="Text" onClick={()=>{addQuestionType(i,"text")}}>
                     <Subject style={{ marginRight: "10px" }}  /> Paragraph
                   </MenuItem>
-                  <MenuItem id="checkbox" value="Checkbox" onCLick={()=>{addQuestionType(i,"checkbox")}}>
+                  <MenuItem id="checkbox" value="Checkbox" onClick={()=>{addQuestionType(i,"checkbox")}}>
                     <CheckBox
                       style={{ marginRight: "10px", color: "#70757a" }}
                       
                       checked
-                    />{" "}
+                     
+                    />
                     CheckBox
                   </MenuItem>
-                  <MenuItem id="radio" value="Radio" onCLick={()=>{addQuestionType(i,"radio")}}>
+                  <MenuItem id="radio" value="Radio" onClick={()=>{addQuestionType(i,"radio")}} >
                     <Radio
                       style={{ marginRight: "10px", color: "#70757a" }}
                       
                       checked
-                    />{" "}
+                    />
                     Multiple Choice
                   </MenuItem>
                 </Select>
@@ -169,7 +200,8 @@ const AddForm = () => {
 
               {ques.options.map((op, j) => (
                 <div className="add_question_body" key={j}>
-                  {(ques.questionType != "text") ? 
+                  {
+                  (ques.questionType != "text") ? 
                     <input
                       type={ques.questionType}
                       style={{ marginRight: "10px" }}
@@ -180,7 +212,8 @@ const AddForm = () => {
 
                   <div>
                     <input
-                    // value={ques.option[j].optionText} 
+                    value={ques.options[j].optionText} 
+                    onChange={(e)=>{changeOptionValue(e.target.value,i,j)}}
                       type="text"
                       className="text_input"
                       placeholder="option"
@@ -188,7 +221,7 @@ const AddForm = () => {
                   </div>
                   <CropOriginal style={{ color: "#5f6368" }} />
                   <IconButton aria-label="delete">
-                    <Close />
+                    <Close onClick={()=>{removeOption(i,j)}} />
                   </IconButton>
                 </div>
               ))}
@@ -198,14 +231,14 @@ const AddForm = () => {
               {ques.options.length < 5 ? (
                   <div className="add_question_body">
                     <FormControlLabel disabled control={
-                        (ques.questionType!="text")?
+                        (ques.questionType!="text") ?
                         <input type={ques.questionType} color="primary" inputProps={{'aria-label':'secondary checkbox'}}
                         style={{marginLeft:"10px",marginRight:"10px"}} disabled/> :
                         <ShortText style={{marginRight:"10px"}}/>
                     }label={
                             <div>
                                 <input type="text" className="text_input" style={{fontSize:"13px",width:"60px"}} placeholder="Add other"/>
-                               <Button size="small" style={{textTransform:"none",color:'#4285f4',fontSize:"600"}}>Add option</Button>
+                               <Button size="small" onClick={()=>{addOption(i)}} style={{textTransform:"none",color:'#4285f4',fontSize:"13px",fontWeight:"600"}}>Add option</Button>
                             </div>
                         }/>
 
