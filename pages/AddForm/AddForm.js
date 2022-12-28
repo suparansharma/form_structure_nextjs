@@ -29,7 +29,7 @@ import { fontSize } from "@mui/system";
 import Link from "next/link";
 import React, { useState } from "react";
 import uuid from "react-uuid";
-
+import {DragDropContext,Droppable} from "react-beautiful-dnd"
 const AddForm = () => {
   // const[open,setOpen]=(true);
   const id = uuid();
@@ -84,7 +84,7 @@ const AddForm = () => {
 
 
   function addOption(i){
-    var optionsOfQuestion = [...question];
+    var optionsOfQuestion = [...questions];
     if(optionsOfQuestion[i].options.length < 5){
       optionsOfQuestion[i].options.push({optionText:"Option" + (optionsOfQuestion[i].options.length +1)})
     }else{
@@ -94,6 +94,56 @@ const AddForm = () => {
     setQuestions(optionsOfQuestion);
   }
 
+
+  function copyQuestion(i){
+    // expandCloseAll();
+    let qs =[...questions];
+    var newQuestion = qs[i];
+    // setQuestions = qs[i];
+    setQuestions([...questions,newQuestion])
+  }
+
+
+  function deleteQuestion(i){
+    let qs = [...questions];
+    if(questions.length > 1){
+      qs.splice(i,1);
+    }
+    setQuestions(qs)
+  }
+
+
+  function requiredQuestion(i){
+    var reqQuestion = [...questions];
+    reqQuestion[i].required = !reqQuestion[i].required;
+    console.log(reqQuestion[i].required+ " "+ i);
+    setQuestions(reqQuestion);
+  }
+
+  function addMoreQuestionField(){
+    setQuestions([...questions,
+      {questionText:"Question",questionType:"radio",options:[{optionText:"Option 1"}], open:true, required:false}])
+  }
+
+  function onDragEnd(result){
+    if(!result.destination){
+      return;
+    }
+
+    var itemgg = [...questions];
+    const itemF = reorder(itemgg,
+      result.source.index,
+      result.destination.index
+      );
+      setQuestions(itemF)
+  }
+
+  const reorder = (list,startIndex,endIndex)=>{
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex,1);
+    result.splice(endIndex,0,removed);
+    return result;
+  }
 
   function questionUI() {
     return questions.map((ques, i) => (
@@ -257,14 +307,14 @@ const AddForm = () => {
                 </div>
 
                 <div className="add_question_bottom">
-                    <IconButton aria-label="copy">
+                    <IconButton aria-label="copy" onClick={()=>{copyQuestion(i)}}>
                         <FilterNone/>
                     </IconButton>
 
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={()=>{deleteQuestion(i)}}>
                         <Delete/>
                     </IconButton>
-                    <span style={{ color:"#5f6368",fontSize:"13px" }}>Required</span><Switch name="checked" color="primary" checked/>
+                    <span style={{ color:"#5f6368",fontSize:"13px" }}>Required</span><Switch name="checked" color="primary" onClick={()=>{requiredQuestion(i)}} checked/>
                    <IconButton>
                     <MoreVert/>
                     </IconButton> 
@@ -273,7 +323,7 @@ const AddForm = () => {
             </AccordionDetails>
             
             <div className="question_edit">
-              <AddCircleOutline className="edit"/>
+              <AddCircleOutline onClick={addMoreQuestionField} className="edit"/>
               <OndemandVideo className="edit"/>
               <CropOriginal className="edit"/>
               <TextFields className="edit"/>
@@ -305,7 +355,26 @@ const AddForm = () => {
               />
             </div>
           </div>
+
+        {/* <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+
+            {
+              (provided,snapshot)=>(
+                <div {...provided,droppableProps} ref={provided.innerRef}>
+                   {questionUI()}
+                  {provided.placeholder}
+                </div>
+              )
+            }
+            </Droppable>
+
+          </DragDropContext> */}
+
+          
           {questionUI()}
+         
+
         </div>
       </div>
     </div>
